@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for i in 007 009 029 034 044 058 060 071 080 082 093 097 ; do
+	openssl rsautl -inkey privatekey-$i.pem -decrypt -in ../challenge/$i.bin
+done
+

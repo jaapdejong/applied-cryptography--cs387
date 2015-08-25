@@ -1,0 +1,48 @@
+m0  = 'But heard, half-heard, in the stillness'				-- oaep
+m1  = 'Chinese Remainder Theorem'					-- no encryption
+m2  = 'we recommend you read this blog: http://goo.gl/5I1lt'		-- oaep
+m3  = ''
+m4  = 'Over the wintry forest, winds howl in rage'			-- oaep
+m5  = ''
+m6  = 'Between two waves of the sea. -T.S. Eliot'			-- oaep
+m7  = ''
+m8  = 'we recommend you read this blog: http://goo.gl/5I1lt'		-- oaep
+m9  = '###Should you use a random nonce with oaep?'			-- no encryption
+m10 = 'Fermat was a smart guy. He might have some hints on factoring'	-- oaep
+m11 = 'What could go wrong: http://pastebin.com/hNz9gZbe'		-- oaep
+m12 = 'A real example: http://digitaloffense.net/tools/debian-openssl'	-- oaep
+m13 = 'we recommend you read this blog: http://goo.gl/5I1lt'		-- oaep
+m14 = ''
+m15 = ''
+
+
+
+m0, m6
+	We shall not cease from exploration
+	And the end of all our exploring
+	Will be to arrive where we started
+	And know the place for the first time.
+	Through the unknown, unremembered gate
+	When the last of earth left to discover
+	Is that which was the beginning;
+	At the source of the longest river
+	The voice of the hidden waterfall
+	And the children in the apple-tree
+	Not known, because not looked for
+	But heard, half-heard, in the stillness
+	Between two waves of the sea.
+	Quick now, here, now, always—
+	A condition of complete simplicity
+	(Costing not less than everything)
+	And all shall be well and
+	All manner of thing shall be well
+	When the tongues of flame are in-folded
+	Into the crowned knot of fire
+	And the fire and the rose are one.
+
+	(From “Little Gidding” by T.S. Eliot)
+
+m4
+	Over the wintry forest, winds howl in rage
+
+	Natsume Soseki
