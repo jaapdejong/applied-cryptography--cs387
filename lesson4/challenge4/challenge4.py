@@ -567,79 +567,96 @@ sharedFactorAttack("exercise 11", c11, e11, n11, p11_12)
 sharedFactorAttack("exercise 12", c12, e12, n12, p11_12)
 sameMessageAttack("exercise 13", c2, n2, c8, n8, c13, n13)
 
-############################################################################
-# Experiment: nonce reused (m9)
-############################################################################
-text = []
-# add the text from T.S. Eliot - text referenced by m0 and m6
-text.append("We shall not cease from exploration")
-text.append("And the end of all our exploring")
-text.append("Will be to arrive where we started")
-text.append("And know the place for the first time.")
-text.append("Through the unknown, unremembered gate")
-text.append("When the last of earth left to discover")
-text.append("Is that which was the beginning;")
-text.append("At the source of the longest river")
-text.append("The voice of the hidden waterfall")
-text.append("And the children in the apple-tree")
-text.append("Not known, because not looked for")
-text.append("But heard, half-heard, in the stillness")
-text.append("Between two waves of the sea.")
-text.append("Between two waves of the sea")
-text.append("Quick now, here, now, always-")
-text.append("A condition of complete simplicity")
-text.append("(Costing not less than everything)")
-text.append("And all shall be well and")
-text.append("All manner of thing shall be well")
-text.append("When the tongues of flame are in-folded")
-text.append("Into the crowned knot of fire")
-text.append("And the fire and the rose are one.")
-# and a reference to m4
-text.append("Over the Wintry. -Natsume Soseki")
-text.append("What hath God wrought? -Samuel Morse")
-# add quotes from earlier tasks (most of them are too long)
-text.append("One if by land; two if by sea")
-#text.append("Trust, but verify. -a signature phrase of President Ronald Reagan")
-#text.append("The best way to find out if you can trust somebody is to trust them. (Ernest Hemingway)")
-#text.append("If you reveal your secrets to the wind, you should not blame the wind for revealing them to the trees. (Khalil Gibran)")
-#text.append("I am not very good at keeping secrets at all! If you want your secret kept do not tell me! (Miley Cyrus)")
-text.append("This message is exactly sixty four characters long and no longer")
-text.append("Where is the ANY key? -Homer Simpson")
-# add found solutions for the sake of testing the code
-for i in SOLVED:
-	text.append(M[i])
-
-# nonces are added while decoding previous messages (oaep_decode)
-
-# nonces from cipher0 & 6
-#nonceM0 = int_to_bits(1432418676436716208706958119837787028875504791733452125391263822915077665497959764580158692965645332187600515530039557217115603663634143115796464962378503)
-#nonceM6 = int_to_bits(10241105553738919638754998566336364981175036452437347313032801860397943855958374927348537860656022547468515387776972434785755616718411827661550306822270382)
-#nonce = [nonceM0, nonceM6]
-def dictionaryAttack(ex, c, e, n):
-	print ex
-	for i in range(0, len(text)):
-		m = text[i]
-		mi = string_to_int(m)
-		mb = int_to_bits(mi)
-		# first try plain message
-		ci = pow(mi, e, n)
-		if ci == c:
-			print ex
-			print m
-			return m
-		# second try encrypted message with all found nonces
-		for j in range(0, len(nonce)):
-			ci = oaep_encode(mb, e, n, nonce[j])
-			if ci == c:
-				print ex
-				print m
-				return m
-		
-print
-print "reused nonce?"
-for i in UNSOLVED:
-	dictionaryAttack("exercise " + str(i), C[i], E[i], N[i])
-
+###	############################################################################
+###	# Experiment: nonce reused (m9)
+###	############################################################################
+###	text = []
+###	# add the text from T.S. Eliot - text referenced by m0 and m6
+###	text.append("We shall not cease from exploration")
+###	text.append("And the end of all our exploring")
+###	text.append("Will be to arrive where we started")
+###	text.append("And know the place for the first time.")
+###	text.append("Through the unknown, unremembered gate")
+###	text.append("When the last of earth left to discover")
+###	text.append("Is that which was the beginning;")
+###	text.append("At the source of the longest river")
+###	text.append("The voice of the hidden waterfall")
+###	text.append("And the children in the apple-tree")
+###	text.append("Not known, because not looked for")
+###	text.append("But heard, half-heard, in the stillness")
+###	text.append("Between two waves of the sea.")
+###	text.append("Between two waves of the sea")
+###	text.append("Quick now, here, now, always-")
+###	text.append("A condition of complete simplicity")
+###	text.append("(Costing not less than everything)")
+###	text.append("And all shall be well and")
+###	text.append("All manner of thing shall be well")
+###	text.append("When the tongues of flame are in-folded")
+###	text.append("Into the crowned knot of fire")
+###	text.append("And the fire and the rose are one.")
+###	# and a reference to m4
+###	text.append("Over the Wintry. -Natsume Soseki")
+###	text.append("What hath God wrought? -Samuel Morse")
+###	# add quotes from earlier tasks (most of them are too long)
+###	text.append("One if by land; two if by sea")
+###	#text.append("Trust, but verify. -a signature phrase of President Ronald Reagan")
+###	#text.append("The best way to find out if you can trust somebody is to trust them. (Ernest Hemingway)")
+###	#text.append("If you reveal your secrets to the wind, you should not blame the wind for revealing them to the trees. (Khalil Gibran)")
+###	#text.append("I am not very good at keeping secrets at all! If you want your secret kept do not tell me! (Miley Cyrus)")
+###	text.append("This message is exactly sixty four characters long and no longer")
+###	text.append("Where is the ANY key? -Homer Simpson")
+###	# add found solutions for the sake of testing the code
+###	for i in SOLVED:
+###		text.append(M[i])
+###	
+###	# nonces are added while decoding previous messages (oaep_decode)
+###	
+###	# nonces from cipher0 & 6
+###	#nonceM0 = int_to_bits(1432418676436716208706958119837787028875504791733452125391263822915077665497959764580158692965645332187600515530039557217115603663634143115796464962378503)
+###	#nonceM6 = int_to_bits(10241105553738919638754998566336364981175036452437347313032801860397943855958374927348537860656022547468515387776972434785755616718411827661550306822270382)
+###	#nonce = [nonceM0, nonceM6]
+###	def dictionaryAttack(ex, c, e, n):
+###		print ex
+###		for i in range(0, len(text)):
+###			m = text[i]
+###			mi = string_to_int(m)
+###			mb = int_to_bits(mi)
+###			# first try plain message
+###			ci = pow(mi, e, n)
+###			if ci == c:
+###				print ex
+###				print m
+###				return m
+###			# second try encrypted message with all found nonces
+###			for j in range(0, len(nonce)):
+###				ci = oaep_encode(mb, e, n, nonce[j])
+###				if ci == c:
+###					print ex
+###					print m
+###					return m
+###			
+###	print
+###	print "reused nonce?"
+###	for i in UNSOLVED:
+###		dictionaryAttack("exercise " + str(i), C[i], E[i], N[i])
+###	
+###	############################################################################
+###	# Experiment: two digits attack
+###	############################################################################
+###	def fewDigitAttack(ex, c, e, n):
+###		print ex
+###		for mi in range(10, 10000):
+###			mb = int_to_bits(mi)
+###			ci = pow(mi, e, n)
+###			if ci == c:
+###				print mi
+###				return
+###	
+###	print
+###	print "few digits?"
+###	for i in UNSOLVED:
+###		fewDigitAttack("exercise " + str(i), C[i], E[i], N[i])
+###	
 ###	############################################################################
 ###	# Experiment: message reused
 ###	############################################################################
