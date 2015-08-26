@@ -24,37 +24,39 @@ function gcd(p, q)
 
 BEGIN {
 	p = 23;
-	for (g = 2; g <= (p - 1) / 2; ++g) {
+	for (g = 2; g <= (p - 1) / 2; ++g) {			# step through all possible g values
 #if (g != 5) continue;
-		if (gcd(p, g) == 1) coprime = "+"; else coprime = "-"
+		coprime = gcd(p, g) == 1 ? "+" : "-";		# p and g relative prime?
 		printf("%2d%s: ", g, coprime);
-		err = 0;
-		for (a = 1; a <= (p - 1) / 2; ++a) {
-			A = (g ^ a) % p;
-			for (b = 1; b <= (p -1) / 2; ++b) {
-				B = (g ^ b) % p;
-				sA = (B ^ a) % p;
-				sB = (A ^ b) % p;
-				if (sA != sB) {
-					++err;
-#					printf("%d-%d--> ", a, b);
-#					printf("%d-%d\n", A, B);
+		nkeys = 0
+		nerrs = 0;
+		for (a = 1; a <= (p - 1) / 2; ++a) {		# step through all possible values Alice could choose
+			A = (g ^ a) % p;			# Alices value to be sent to Bob
+			for (b = 1; b <= (p -1) / 2; ++b) {	# step through all possible values Bob could choose
+				B = (g ^ b) % p;		# Bobs value to be sent to Alice
+				sA = (B ^ a) % p;		# the key Alice calculates
+				sB = (A ^ b) % p;		# the key Bob calculates
+				if (sA != sB) {			# they should be equal!
+					++errs;
+#					printf("%d-%d-->%d-%d\n ", a, b, A, B);
 				}
-				++found[sA];
+				if (! (sA in found)) ++nkeys;
+				++found[sA];			# add the found key
 			}
 		}
-		n = 0
 		for (i = 1; i <= p; ++i) {
 			if (i in found) {
 				printf("%2d ", found[i]);
-				++n;
+#				++nkeys;
 				delete found[i]
 			} else {
 				printf("%2d ", 0);
 			}			
 		}
-		printf(" [%2d] --> %d\n", n, err);
+		# show nr of different keys and nr of times Alice and Bob calculate a different key
+		printf(" [%2d] --> %d\n", nkeys, nerrs);
 	}
+	exit
 }
 '
 
