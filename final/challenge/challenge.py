@@ -111,7 +111,21 @@ def send_msg(person, token, cipher, iv):
     #                                      "iv":<initialization vector>}}
     return data
 
+from string import atoi
+# hex string to integer
+def h2i(s):
+	value = 0
+	for i in range(len(s) / 2):
+		value = value * 256 + atoi(s[:2], base=16)
+	return value
+
+def sanityCheck():
+	assert h2i("FF") == 255
+
 def test():
+	### just to be sure
+	sanityCheck()
+
  	### step 1a - Establish a session with Alice
 	dictionaryAlice = initialize(Alice)				# --> {"token":<token_value>, "public": <g^x>}
 	tokenAlice = dictionaryAlice['token']
@@ -130,28 +144,49 @@ def test():
 	responseAlice = send_key(Alice, tokenBob, publicBob, "bob")	# --> {"status":"success"}
 	assert responseAlice['status'] == 'success'
 	
-	### step 3 - Relay messages
-	msg = recieve_msg(Alice, tokenBob)				# --> {"msg":<cipher>, "iv":<initialization vector>}
-	print msg
-	cipher = msg['msg']
-	iv = msg['iv'] 
-	while True:
-		msg = send_msg(Alice, tokenBob, cipher, iv)		# --> {"status":"success" ["reply":{"msg":<cipher>, "iv":<initialization vector>}}
-		print msg
-		if not ('reply' in msg): continue
-		reply = msg['reply']
-		if reply == None: break
-		cipher = reply['msg']
-		iv = reply['iv']
-		
-		msg = send_msg(Bob, tokenBob, cipher, iv)
-		print msg
-		reply = msg['reply']
-		if reply == None: break
-		cipher = reply['msg']
-		iv = reply['iv']
-		
-			 
-		
+	### get p & g
+	response = get_pg()
+	p = response['p']
+	g = response['g']
 
+	### show what we know; not that it matters...
+	print "Alice:"
+	print "    token  =", tokenAlice
+	print "    public =", publicAlice
+	print "Bob:"
+	print "    token  =", tokenBob
+	print "    public =", publicBob
+	print "Common:"
+	print "p =", p
+	print "g =", g
+
+	### step 3 - Relay messages
+	person = [Bob, Alice]
+	name = ["bob", "alice"]
+	token = [tokenBob, tokenAlice]
+	public = [publicBob, publicAlice]
+	
+	### step 3a - Alice starts
+	S = 1
+	R = 1 - S
+	response = recieve_msg(person[R], token[S])			# --> {"msg":<cipher>, "iv":<initialization vector>}
+	msg = response['msg']
+	iv = response['iv']
+	S = R
+	
+	### step 3b - get relaying!
+	count = 0
+	while True:
+		R = 1 - S
+		count += 1
+		
+		response = send_msg(person[R], token[S], msg, iv)	# --> {"status":"success" ["reply":{"msg":<cipher>, "iv":<initialization vector>}}
+		if response['status'] != 'success': break
+		if 'reply' in response:
+			msg = response['reply']['msg']
+			iv = response['reply']['iv']
+			print count, ":", name[S], "-->", name[R], ":", iv, ":", msg
+				
+		S = R
+	
 test()
