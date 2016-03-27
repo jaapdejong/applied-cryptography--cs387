@@ -1,3 +1,3 @@
 # cs387
 
-For the 'Applied Cryptography course'
+For the 'Applied Cryptography' course
